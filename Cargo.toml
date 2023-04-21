@@ -15,14 +15,14 @@ repository = "https://github.com/veeso/tui-realm-stdlib"
 
 [dependencies]
 textwrap = "^0.15.1"
-tuirealm = { version = "^1.8.0", default-features = false, features = [ "derive" ]}
+tuirealm = { git = "https://github.com/erak/tui-realm.git", default-features = false, features = [ "derive" ] }
 unicode-width = "^0.1.10"
 
 [dev-dependencies]
 crossterm = "^0.23"
 pretty_assertions = "1.2.1"
 rand = "0.8.5"
-tuirealm = "^1.8.0"
+tuirealm = { git = "https://github.com/erak/tui-realm.git" }
 
 [features]
 default = [ "with-crossterm" ]
