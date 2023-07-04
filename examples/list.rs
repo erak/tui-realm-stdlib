@@ -158,6 +158,8 @@ impl Default for ListAlfa {
                         .add_col(TextSpan::from(" "))
                         .add_col(TextSpan::from("Lorem ipsum dolor sit amet, consectetur adipiscing elit"))
                         .add_row()
+                        .add_col(TextSpan::from("Lorem ipsum dolor sit amet, consectetur adipiscing elit"))
+                        .add_row()
                         .add_col(TextSpan::from("02").fg(Color::Cyan).italic())
                         .add_col(TextSpan::from(" "))
                         .add_col(TextSpan::from("Maecenas tincidunt dui ut gravida fringilla"))

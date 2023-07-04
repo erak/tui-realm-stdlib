@@ -232,10 +232,11 @@ impl MockComponent for Input {
                     AttrValue::Title((String::default(), Alignment::Center)),
                 )
                 .unwrap_title();
-            let borders = self
-                .props
-                .get_or(Attribute::Borders, AttrValue::Borders(Borders::default()))
-                .unwrap_borders();
+            // let borders = self
+            //     .props
+            //     .get_or(Attribute::Borders, AttrValue::Borders(Borders::default()))
+            //     .unwrap_borders();
+            let border_attr = self.props.get(Attribute::Borders);
             let focus = self
                 .props
                 .get_or(Attribute::Focus, AttrValue::Flag(false))
@@ -245,7 +246,14 @@ impl MockComponent for Input {
                 .get(Attribute::FocusStyle)
                 .map(|x| x.unwrap_style());
             let itype = self.get_input_type();
-            let mut block = crate::utils::get_block(borders, Some(title), focus, inactive_style);
+            let mut block = border_attr.clone().map(|borders| {
+                crate::utils::get_block(
+                    borders.unwrap_borders(),
+                    Some(title),
+                    focus,
+                    inactive_style,
+                )
+            });
             // Apply invalid style
             if focus && !self.is_valid() {
                 if let Some(style) = self
@@ -265,7 +273,8 @@ impl MockComponent for Input {
                             AttrValue::Title((String::default(), Alignment::Center)),
                         )
                         .unwrap_title();
-                    block = crate::utils::get_block(borders, Some(title), focus, None);
+                    block = border_attr
+                        .map(|_| crate::utils::get_block(borders, Some(title), focus, None));
                     foreground = style.fg.unwrap_or(Color::Reset);
                     background = style.bg.unwrap_or(Color::Reset);
                 }
@@ -302,9 +311,11 @@ impl MockComponent for Input {
                 false => paragraph_style,
             };
             // Create widget
-            let p: Paragraph = Paragraph::new(text_to_display)
-                .style(paragraph_style)
-                .block(block);
+            let p: Paragraph = Paragraph::new(text_to_display).style(paragraph_style);
+            let p = match block {
+                Some(block) => p.block(block),
+                None => p,
+            };
             render.render_widget(p, area);
             // Set cursor, if focus
             if focus {
