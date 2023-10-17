@@ -195,7 +195,11 @@ impl MockComponent for Radio {
                 .props
                 .get(Attribute::FocusStyle)
                 .map(|x| x.unwrap_style());
-            let div = crate::utils::get_block(borders, title, focus, inactive_style);
+            let block_style = match inactive_style {
+                Some(style) => Some(style.remove_modifier(TextModifiers::REVERSED)),
+                _ => None,
+            };
+            let div = crate::utils::get_block(borders, title, focus, block_style);
             // Make colors
             let (fg, block_color): (Color, Color) = match focus {
                 true => (foreground, foreground),
@@ -203,8 +207,12 @@ impl MockComponent for Radio {
             };
             let modifiers = match focus {
                 true => TextModifiers::REVERSED,
-                false => TextModifiers::empty(),
+                false => match inactive_style {
+                    Some(style) => style.add_modifier,
+                    _ => TextModifiers::empty(),
+                },
             };
+
             let radio: Tabs = Tabs::new(choices)
                 .block(div)
                 .select(self.states.choice)

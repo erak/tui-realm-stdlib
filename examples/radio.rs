@@ -6,7 +6,7 @@ use std::time::Duration;
 
 use tui_realm_stdlib::Radio;
 use tuirealm::command::{Cmd, CmdResult, Direction};
-use tuirealm::props::{Alignment, BorderType, Borders, Color};
+use tuirealm::props::{Alignment, BorderType, Borders, Color, Style, TextModifiers};
 use tuirealm::terminal::TerminalBridge;
 use tuirealm::{
     application::PollStrategy,
@@ -146,6 +146,7 @@ impl Default for RadioAlfa {
                         .modifiers(BorderType::Rounded)
                         .color(Color::LightGreen),
                 )
+                .inactive(Style::default().add_modifier(TextModifiers::REVERSED))
                 .foreground(Color::LightGreen)
                 .title("Select your ice cream flavour 🍦", Alignment::Center)
                 .rewind(true)
